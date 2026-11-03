@@ -31,6 +31,80 @@
   }
   body:hover #help { opacity: 1; }
   noscript { color: #ffd23f; font: 20px ui-monospace, monospace; }
+
+  /* ---- phone layout (below 900 px wide; switched by app.js) ---- */
+  #mobile { display: none; }
+  body.mobile { display: block; overflow: auto; background: #07090d; }
+  body.mobile #frame, body.mobile #help { display: none; }
+  body.mobile #mobile { display: block; }
+  #mobile {
+    font-family: VT323, ui-monospace, monospace; color: #ede9df; font-size: 20px; line-height: 1.2;
+    padding-bottom: 56px;
+    background-image: repeating-linear-gradient(to bottom, rgba(0,0,0,0.18) 0 1px, transparent 1px 3px);
+  }
+  #mobile a { color: inherit; text-decoration: none; }
+  #mobile a:active { color: #4fd1e8; }
+  .m-top { display: flex; gap: 10px; align-items: baseline; padding: 10px 14px 6px; font-size: 18px; }
+  .m-pnum { color: #ede9df; }
+  .m-name { color: #ffd23f; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .m-clock { color: #4fd1e8; white-space: nowrap; }
+  .m-mast { display: flex; align-items: center; justify-content: space-between; margin: 0 14px;
+            height: 46px; padding-left: 12px; transition: background .2s; }
+  .m-label { color: #fff; font-size: 34px; letter-spacing: 1px; }
+  .m-logo { height: 46px; width: 46px; background: #07090d; padding-left: 8px; }
+  .m-tabs { position: sticky; top: 0; z-index: 2; display: flex; gap: 4px; overflow-x: auto;
+            padding: 8px 14px; background: #07090d; scrollbar-width: none; }
+  .m-tabs::-webkit-scrollbar { display: none; }
+  .m-tab { font: inherit; font-size: 19px; background: none; border: 1px solid #3a3f4a; padding: 6px 10px;
+           white-space: nowrap; min-height: 40px; cursor: pointer; }
+  .m-tab.on { background: #ede9df; color: #07090d !important; border-color: #ede9df; }
+  .m-info { margin: 0 14px 6px; border: 1px solid #1c306e; }
+  .m-wx { display: flex; align-items: center; gap: 12px; padding: 6px 10px; background: #0f2a3a; }
+  .m-temp { color: #ffd23f; font-size: 44px; line-height: 1; }
+  .m-cond { color: #ede9df; }
+  .m-aqi { font-size: 19px; }
+  .m-markets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 14px;
+               padding: 6px 10px; background: #12301c; font-size: 17px; }
+  .m-mk { display: flex; justify-content: space-between; gap: 6px; }
+  .m-mkl { color: #ede9df; white-space: nowrap; }
+  .m-mkv { white-space: nowrap; }
+  .m-list { padding: 0 14px; }
+  .m-lead { padding: 10px 0 12px; border-bottom: 2px dashed #4fd1e8; }
+  .m-item { padding: 10px 0; border-bottom: 1px solid #3a3f4a; }
+  .m-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; font-size: 16px; margin-bottom: 3px; }
+  .m-live { background: #ff5a4e; color: #07090d; padding: 0 5px; }
+  .m-src { color: #4fd1e8; }
+  .m-time { color: #969696; }
+  .m-also { color: #6be38a; }
+  .m-h1 { display: block; color: #ffd23f; font-size: 30px; line-height: 1.05; }
+  .m-h2 { display: block; color: #ede9df; font-size: 23px; line-height: 1.1; }
+  .m-h3 { color: #b9b6ac; flex: 1; }
+  .m-sum { margin: 4px 0 0; color: #b9b6ac; font-size: 18px; }
+  .m-sub { font-weight: normal; font-size: 20px; color: #e05fd0; background: #3c1840; padding: 4px 8px; margin: 14px 0 4px; }
+  .m-row { display: flex; gap: 8px; align-items: baseline; padding: 5px 0; border-bottom: 1px solid #22252c; font-size: 18px; }
+  .m-row .m-src { min-width: 74px; font-size: 15px; }
+  .m-dim { color: #969696; }
+  .m-foot { color: #6b6f78; font-size: 15px; padding: 12px 0; }
+  .m-wnow { padding: 10px 0; }
+  .m-wbig { color: #ffd23f; font-size: 72px; line-height: 1; }
+  .m-aqibox { background: #1e1214; padding: 8px 10px; margin: 6px 0; }
+  .m-aqibig { font-size: 36px; }
+  .m-hours { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .m-hour { border: 1px solid #3a3f4a; padding: 6px; font-size: 16px; }
+  .m-htemp { color: #ffd23f; font-size: 28px; }
+  .m-day { display: flex; gap: 10px; padding: 5px 0; border-bottom: 1px solid #22252c; }
+  .m-day .m-src { min-width: 96px; }
+  .m-dcond { flex: 1; }
+  .m-dt { color: #ffd23f; }
+  .m-ticker { position: fixed; left: 0; right: 0; bottom: 0; height: 44px; display: flex; align-items: center;
+              background: #07090d; z-index: 3; }
+  .m-flash { color: #ffd23f; padding: 0 10px; font-size: 22px; }
+  .m-tickwrap { flex: 1; height: 100%; overflow: hidden; background: #ffd23f; display: flex; align-items: center; }
+  .m-tickline { white-space: nowrap; color: #07090d; font-size: 24px; animation: tick linear infinite;
+                will-change: transform; }
+  .m-tickline b { font-weight: normal; color: #102e96; }
+  @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .m-tickline { animation: none; } }
 </style>
 </head>
 <body>
@@ -38,8 +112,10 @@
   <canvas id="screen" width="1920" height="1080" role="img"
           aria-label="Teletext-style news pages: top stories, India, World, Business, Tech, Sport and Delhi weather"></canvas>
 </div>
+<div id="mobile"></div>
 <div id="help">← → pages · type 3 digits for a page · space hold · double-click full screen · click a headline to open it</div>
 <noscript>This page draws teletext-style news pages with JavaScript, which is turned off.</noscript>
 <script src="app.js"></script>
+<script src="mobile.js"></script>
 </body>
 </html>

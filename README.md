@@ -8,7 +8,7 @@ Nothing runs on a home server. A GitHub Actions job fetches the feeds every 10 m
 
 | Path | What it is |
 |---|---|
-| `site/` | The website: `index.html`, `app.js` (canvas renderer), VT323 font, logo, `CNAME` |
+| `site/` | The website: `index.html`, `app.js` (TV/desktop canvas renderer), `mobile.js` (phone layout), VT323 font, logo, `CNAME` |
 | `fetcher/` | `teletext/fetch.py` and `config.toml` (sources and feed URLs), shared with the Pi version |
 | `.github/workflows/update.yml` | Every 10 min: fetch, then deploy to Pages |
 | `.github/workflows/keepalive.yml` | Monthly empty commit if needed, so GitHub doesn't disable the schedule after 60 quiet days |
@@ -18,6 +18,10 @@ Nothing runs on a home server. A GitHub Actions job fetches the feeds every 10 m
 - Pages rotate automatically: 101 index, 102+ top stories, 110 India, 120 World, 140 Business, 160 Tech, 300 Sport, 400 Weather.
 - Click a headline (or a ticker item) to open the article. Click a coloured link at the bottom to jump to that section.
 - Keyboard: ← → change page, type three digits to go to a page, space holds the current page, `f` or double-click for full screen.
+
+## On a phone
+
+Below 900 px wide the site switches to a scrolling layout: section tabs (swipe left or right to change), weather, AQI and markets at the top, tappable headlines with summaries, and the ticker along the bottom. Turning a tablet sideways or widening the window switches to the TV layout.
 
 ## Changing sources
 

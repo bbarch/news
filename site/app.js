@@ -503,8 +503,13 @@ const state = {
   t0: performance.now(),
 };
 
+// Same test the browser uses for CSS, so layout and mode never disagree.
+const phoneQuery = window.matchMedia('(max-width: 899px)');
+const isMobile = () => phoneQuery.matches;
+
 function setNews(news) {
   state.news = news;
+  if (isMobile()) MobileView.render(news);
   const p = plan(news);
   state.pages = p.pages; state.storyPage = p.storyPage;
   state.ticker = buildTicker(news);
@@ -529,7 +534,7 @@ const ctx = view.getContext('2d');
 function frame(ts) {
   const t = (ts - state.t0) / 1000;
   const now = new Date();
-  if (!state.pages.length) { requestAnimationFrame(frame); return; }
+  if (!state.pages.length || isMobile()) { requestAnimationFrame(frame); return; }
   let page = state.pages[state.idx];
   if (!state.hold && t - state.pageStart >= page.dur) { go(state.idx + 1, t); page = state.pages[state.idx]; }
   const pt = t - state.pageStart;
@@ -596,7 +601,10 @@ async function loadData(first) {
     if (!r.ok) throw new Error(r.status);
     const news = await r.json();
     if (first || !state.news.generated) setNews(news);
-    else if (news.generated !== state.news.generated) state.pending = news;   // applied at the top of the rotation
+    else if (news.generated !== state.news.generated) {
+      if (isMobile()) setNews(news);         // phone view has no rotation to wait for
+      else state.pending = news;             // TV view: applied at the top of the rotation
+    }
   } catch (e) {
     if (first) setNews({});
     console.warn('news.json not loaded:', e);
@@ -610,13 +618,25 @@ function fitScreen() {
   frameEl.style.width = `${Math.floor(BW * s)}px`;
   frameEl.style.height = `${Math.floor(BH * s)}px`;
 }
-window.addEventListener('resize', fitScreen);
+let wasMobile = null;
+function applyMode() {
+  const m = isMobile();
+  if (m === wasMobile) return;
+  wasMobile = m;
+  MobileView.activate(m);
+  if (m && state.news.generated) MobileView.render(state.news);
+}
+window.addEventListener('resize', () => { fitScreen(); applyMode(); });
+phoneQuery.addEventListener('change', () => { fitScreen(); applyMode(); });
+window.addEventListener('load', () => { fitScreen(); applyMode(); });
 
-(async () => {
+// Start once every script (including mobile.js) has loaded.
+window.addEventListener('DOMContentLoaded', async () => {
   fitScreen();
+  applyMode();
   try { await document.fonts.load('30px VT323'); } catch (e) { /* fall back to monospace */ }
   for (const k in metricCache) delete metricCache[k];
   await loadData(true);
   setInterval(() => loadData(false), DATA_EVERY_MS);
   requestAnimationFrame(frame);
-})();
+});
