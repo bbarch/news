@@ -5,7 +5,8 @@
 // ---- layout grid (1920x1080 units) -----------------------------------------
 const BW = 1920, BH = 1080, M = 60;
 const HEADER_Y = 16, HEADER_H = 38, MAST_Y = 60, MAST_H = 72, BODY_Y = 146, FAST_H = 36;
-const FAST_Y = BH - 18 - FAST_H, TICK_H = 60, TICK_Y = FAST_Y - 12 - TICK_H, BODY_H = TICK_Y - 14 - BODY_Y;
+const DISC_H = 20, DISC_Y = BH - 6 - DISC_H;            // small source/rights line at the very bottom
+const FAST_Y = DISC_Y - 6 - FAST_H, TICK_H = 60, TICK_Y = FAST_Y - 12 - TICK_H, BODY_H = TICK_Y - 14 - BODY_Y;
 const TICK_FONT = 45, TICK_LABEL_W = 285;
 const SIDE_W = 384, SIDE_X = BW - M - SIDE_W, SIDE_Y = MAST_Y, SIDE_H = TICK_Y - 14 - SIDE_Y;
 const CR = SIDE_X - 26, CONTENT_W = CR - M;
@@ -14,6 +15,9 @@ const STORY_S = 20, INDEX_S = 16, TICK_SPEED = 175;   // px per second
 const DATA_URL = 'news.json', DATA_EVERY_MS = 120000;
 
 const NAME = 'bbArch NewsTicker Live';
+// Full wording is shown on the phone page; the TV screen gets the one-line version.
+const DISCLAIMER = "Headlines and summaries come from the publishers' public RSS feeds and link to the original articles. All rights remain with The Hindu, The Indian Express, Hindustan Times, BBC News, The Guardian and Al Jazeera. Content is shown automatically and unedited; bbArch is not affiliated with these publishers and is not responsible for the accuracy of their reporting. Weather and air quality: Open-Meteo (CC BY 4.0). Market figures are indicative and may be delayed. Removal requests: mail@bbarch.org";
+const DISCLAIMER_SHORT = "Headlines and summaries come from the publishers' public RSS feeds and link to the originals; all rights remain with the publishers. bbArch is not affiliated with them and is not responsible for their accuracy. Weather: Open-Meteo (CC BY 4.0). Markets indicative. Removal requests: mail@bbarch.org";
 const TZ = 'Asia/Kolkata';
 const CLOCKS = [['Delhi', TZ], ['London', 'Europe/London'], ['New York', 'America/New_York'],
                 ['Dubai', 'Asia/Dubai'], ['Singapore', 'Asia/Singapore']];
@@ -484,6 +488,14 @@ function drawTicker(ctx, t) {
   ctx.restore();
 }
 
+// ---- bottom line: sources and rights -------------------------------------------------
+let discSize = null;
+function drawDisclaimer(ctx) {
+  const maxW = BW - 2 * M;
+  if (discSize === null) discSize = [17, 16, 15].find((s) => width(DISCLAIMER_SHORT, s) <= maxW) || 15;
+  text(ctx, BW / 2, DISC_Y + DISC_H / 2, fit(DISCLAIMER_SHORT, discSize, maxW), discSize, rgb(120, 122, 128), 'mm');
+}
+
 // ---- header -------------------------------------------------------------------------
 function drawHeader(ctx, num, now) {
   const y = HEADER_Y + HEADER_H / 2;
@@ -553,6 +565,7 @@ function frame(ts) {
 
   drawTicker(ctx, t);
   ctx.drawImage(layers.fast, 0, FAST_Y);
+  drawDisclaimer(ctx);
   requestAnimationFrame(frame);
 }
 

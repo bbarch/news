@@ -34,7 +34,9 @@
 
   /* ---- phone layout (below 900 px wide; switched by app.js) ---- */
   #mobile { display: none; }
-  body.mobile { display: block; overflow: auto; background: #07090d; }
+  /* Phone mode: let the window scroll normally (TV mode locks it). */
+  html.mobile, html.mobile body { height: auto; overflow: visible; }
+  body.mobile { display: block; background: #07090d; }
   body.mobile #frame, body.mobile #help { display: none; }
   body.mobile #mobile { display: block; }
   #mobile {
@@ -84,7 +86,9 @@
   .m-row { display: flex; gap: 8px; align-items: baseline; padding: 5px 0; border-bottom: 1px solid #22252c; font-size: 18px; }
   .m-row .m-src { min-width: 74px; font-size: 15px; }
   .m-dim { color: #969696; }
-  .m-foot { color: #6b6f78; font-size: 15px; padding: 12px 0; }
+  .m-foot { color: #6b6f78; font-size: 15px; padding: 12px 0 0; margin: 0; }
+  .m-disc { color: #787a80; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 12px; line-height: 1.45;
+            margin: 8px 0 14px; }
   .m-wnow { padding: 10px 0; }
   .m-wbig { color: #ffd23f; font-size: 72px; line-height: 1; }
   .m-aqibox { background: #1e1214; padding: 8px 10px; margin: 6px 0; }
@@ -114,7 +118,8 @@
 </div>
 <div id="mobile"></div>
 <div id="help">← → pages · type 3 digits for a page · space hold · double-click full screen · click a headline to open it</div>
-<noscript>This page draws teletext-style news pages with JavaScript, which is turned off.</noscript>
+<noscript>This page draws teletext-style news pages with JavaScript, which is turned off.
+Headlines and summaries come from the publishers' public RSS feeds; all rights remain with the publishers. Removal requests: mail@bbarch.org</noscript>
 <script src="app.js"></script>
 <script src="mobile.js"></script>
 </body>

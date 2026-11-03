@@ -142,9 +142,8 @@ const MobileView = (() => {
       if (!items.length) list.append(el('p', 'm-dim', 'No stories in this section yet.'));
       items.forEach((s) => list.append(storyCard(s, false)));
     }
-    list.append(el('p', 'm-foot', news.generated
-      ? `Updated ${ago(news.generated)} · sources: The Hindu, Indian Express, Hindustan Times, BBC, Guardian, Al Jazeera`
-      : ''));
+    if (news.generated) list.append(el('p', 'm-foot', `Updated ${ago(news.generated)}`));
+    list.append(el('p', 'm-disc', DISCLAIMER));
   }
 
   function renderWeather(list) {
@@ -217,6 +216,7 @@ const MobileView = (() => {
     activate(on) {
       if (on && !root) build();
       document.body.classList.toggle('mobile', on);
+      document.documentElement.classList.toggle('mobile', on);
       if (on && !clockTimer) clockTimer = setInterval(tickClock, 15000);
       if (!on && clockTimer) { clearInterval(clockTimer); clockTimer = null; }
     },
