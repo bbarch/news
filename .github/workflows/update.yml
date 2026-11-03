@@ -1,0 +1,73 @@
+name: Update news
+
+# Every 10 minutes: fetch the feeds, then publish the site with fresh news.json.
+# GitHub may start scheduled runs a few minutes late at busy times.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: fetcher/requirements.txt
+
+      - run: pip install -r fetcher/requirements.txt
+
+      # The live site's current data lets the fetcher keep the last good
+      # weather and market values if one of those requests fails this run.
+      - name: Previous data
+        run: |
+          mkdir -p data
+          SITE=$(cat site/CNAME)
+          curl -sfL "https://$SITE/news.json" -o data/news.json || echo "no previous data yet"
+
+      - name: Fetch feeds, markets, weather
+        working-directory: fetcher
+        env:
+          TELETEXT_DATA: ../data
+          TELETEXT_CONFIG: config.toml
+        run: python -m teletext.fetch
+
+      - name: Publish data
+        run: |
+          python3 - <<'EOF'
+          import json
+          d = json.load(open("data/news.json"))
+          d.pop("_pool", None)          # internal working set, not needed by the page
+          json.dump(d, open("site/news.json", "w"), separators=(",", ":"))
+          EOF
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

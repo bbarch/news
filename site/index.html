@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bbArch NewsTicker Live</title>
+<meta name="description" content="Live Indian and world headlines in a teletext-style display, from The Hindu, The Indian Express, Hindustan Times, BBC News, The Guardian and Al Jazeera.">
+<link rel="icon" type="image/png" href="bbarch-logo.png">
+<link rel="preload" href="fonts/VT323-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<style>
+  @font-face {
+    font-family: "VT323";
+    src: url("fonts/VT323-Regular.ttf") format("truetype");
+    font-display: block;
+  }
+  :root { color-scheme: dark; }
+  html, body {
+    margin: 0; height: 100%; background: #000; overflow: hidden;
+  }
+  body { display: flex; align-items: center; justify-content: center; }
+  #frame { position: relative; }
+  #screen { display: block; width: 100%; height: 100%; background: #07090d; }
+  /* CRT scanlines: drawn by the browser once, not per frame */
+  #frame::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.22) 0 1px, transparent 1px 3px);
+  }
+  #help {
+    position: fixed; right: 10px; bottom: 6px; font: 13px ui-monospace, monospace;
+    color: #6b6f78; opacity: 0; transition: opacity .4s;
+  }
+  body:hover #help { opacity: 1; }
+  noscript { color: #ffd23f; font: 20px ui-monospace, monospace; }
+</style>
+</head>
+<body>
+<div id="frame">
+  <canvas id="screen" width="1920" height="1080" role="img"
+          aria-label="Teletext-style news pages: top stories, India, World, Business, Tech, Sport and Delhi weather"></canvas>
+</div>
+<div id="help">← → pages · type 3 digits for a page · space hold · double-click full screen · click a headline to open it</div>
+<noscript>This page draws teletext-style news pages with JavaScript, which is turned off.</noscript>
+<script src="app.js"></script>
+</body>
+</html>

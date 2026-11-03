@@ -1,0 +1,80 @@
+# Fetcher settings for news.bbarch.org (run by GitHub Actions).
+
+[station]
+name = "bbArch NewsTicker Live"
+timezone = "Asia/Kolkata"
+city = "DELHI"
+latitude = 28.61
+longitude = 77.21
+
+[fetch]
+# Seconds between fetches is set by the systemd timer (default 5 min).
+user_agent = "TeletextPi/1.0 (+local news display)"
+timeout = 15
+max_age_hours = 36        # drop stories older than this
+summary_chars = 260       # trim feed descriptions to roughly this length
+
+[[source]]
+name = "The Hindu"
+short = "HINDU"
+region = "india"
+feeds = [
+  { section = "india",    url = "https://www.thehindu.com/news/national/feeder/default.rss" },
+  { section = "world",    url = "https://www.thehindu.com/news/international/feeder/default.rss" },
+  { section = "business", url = "https://www.thehindu.com/business/feeder/default.rss" },
+  { section = "sport",    url = "https://www.thehindu.com/sport/feeder/default.rss" },
+  { section = "tech",     url = "https://www.thehindu.com/sci-tech/feeder/default.rss" },
+]
+
+[[source]]
+name = "The Indian Express"
+short = "EXPRESS"
+region = "india"
+feeds = [
+  { section = "india",    url = "https://indianexpress.com/section/india/feed/" },
+  { section = "business", url = "https://indianexpress.com/section/business/feed/" },
+  { section = "sport",    url = "https://indianexpress.com/section/sports/feed/" },
+  { section = "tech",     url = "https://indianexpress.com/section/technology/feed/" },
+]
+
+[[source]]
+name = "Hindustan Times"
+short = "HT"
+region = "india"
+feeds = [
+  { section = "india",    url = "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml" },
+  { section = "world",    url = "https://www.hindustantimes.com/feeds/rss/world-news/rssfeed.xml" },
+  { section = "business", url = "https://www.hindustantimes.com/feeds/rss/business/rssfeed.xml" },
+  { section = "sport",    url = "https://www.hindustantimes.com/feeds/rss/sports/rssfeed.xml" },
+]
+
+[[source]]
+name = "BBC News"
+short = "BBC"
+region = "intl"
+feeds = [
+  { section = "world",    url = "https://feeds.bbci.co.uk/news/world/rss.xml" },
+  { section = "india",    url = "https://feeds.bbci.co.uk/news/world/asia/india/rss.xml" },
+  { section = "business", url = "https://feeds.bbci.co.uk/news/business/rss.xml" },
+  { section = "tech",     url = "https://feeds.bbci.co.uk/news/technology/rss.xml" },
+  { section = "sport",    url = "https://feeds.bbci.co.uk/sport/rss.xml" },
+]
+
+[[source]]
+name = "The Guardian"
+short = "GUARDIAN"
+region = "intl"
+feeds = [
+  { section = "world",    url = "https://www.theguardian.com/world/rss" },
+  { section = "business", url = "https://www.theguardian.com/business/rss" },
+  { section = "tech",     url = "https://www.theguardian.com/technology/rss" },
+  { section = "sport",    url = "https://www.theguardian.com/sport/rss" },
+]
+
+[[source]]
+name = "Al Jazeera"
+short = "ALJAZEERA"
+region = "intl"
+feeds = [
+  { section = "world",    url = "https://www.aljazeera.com/xml/rss/all.xml" },
+]
